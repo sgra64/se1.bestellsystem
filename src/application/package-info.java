@@ -13,6 +13,6 @@ package application;
  * common definitions used in Javadocs.
  */
 class package_info {
-    static final String Author = "sgraupner";
+    static final String Author = "Andrijan Berton";
     static final String Version = "1.0.0-SNAPSHOT-C12";
 }

@@ -1,0 +1,20 @@
+1.) Warum haben die Setter-Methoden, z.B. +setId(id: long), nicht wie üblich void als Rückgabewert, sondern geben Customer zurück?
+
+Die Setter-Methoden, die einen Customer-Rückgabewert haben, sind so konzipiert, dass sie eine sogenannte "method chaining"-Funktionalität ermöglichen. Anstatt nach dem Aufruf einer Setter-Methode einen Abschluss (Rückkehrpunkt) zu erreichen, wird die Methode auf die Klasse selbst zurückgegeben, was es ermöglicht, mehrere Methodenaufrufe nacheinander zu "ketten".
+
+2.) Welchen Wert soll die Methode als Ergebnis liefern?
+
+Die Methode gibt eine Referenz auf das aktuelle Customer-Objekt zurück. Dies ermöglicht es, weitere Methoden auf demselben Objekt in einer einzigen Zeile auszuführen. Diese Kettenmethode erleichtert den Prozess, mehrere Einstellungen an einem Objekt vorzunehmen, ohne mehrere separate Anweisungen zu verwenden.
+
+3.) Was ist "method chaining"?
+
+Method chaining (Methodenkettung) bezieht sich auf das Konzept, mehrere Methodenaufrufe auf demselben Objekt in einer einzigen Anweisung oder Zeile zu verketten. Dies wird erreicht, indem die Methode eine Referenz auf das Objekt zurückgibt, anstatt ein bestimmtes Ergebnis oder void. Das führt zu einem lesbaren und oft kompakteren Code.
+
+4.) Warum ist das sinnvoll?
+
+Method chaining ist praktisch, weil es:
+
+Lesbarkeit erhöht: Die Verkettung von Methodenaufrufen macht den Code lesbarer und flüssiger, da die Absicht klar ist und weniger Zeilen verwendet werden.
+Code kompakter macht: Anstatt mehrere Zeilen für jede separate Methode zu verwenden, können Entwickler die Methode verketten, um denselben Effekt in weniger Codezeilen zu erreichen.
+Fließende Schnittstellen ermöglicht: Fließende Schnittstellen (fluent interfaces) sind leicht zu verwenden und bieten eine intuitive Art und Weise, Einstellungen vorzunehmen oder Aktionen durchzuführen, insbesondere in Builder-Pattern oder beim Einrichten von Objekten.
+Im Beispiel der Customer-Klasse kann die Verkettung beispielsweise dazu führen, dass man in einer Zeile mehrere Setter-Methoden aufruft, um verschiedene Attribute des Customer-Objekts festzulegen.
