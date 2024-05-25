@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Customer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">datamodel</a> &gt; <span class="el_source">Customer.java</span></div><h1>Customer.java</h1><pre class="source lang-java linenums">package datamodel;
+
+import java.util.*;
+
+/**
+ * Class of entity type &lt;i&gt;Customer&lt;/i&gt;.
+ * &lt;p&gt;
+ * Customer is a person who creates and holds (owns) orders in the system.
+ * &lt;/p&gt;
+ * 
+ * @version &lt;code style=color:green&gt;{@value application.package_info#Version}&lt;/code&gt;
+ * @author &lt;code style=color:blue&gt;{@value application.package_info#Author}&lt;/code&gt;
+ */
+public class Customer {
+
+    /**
+     * Unique Customer id attribute, {@code id &lt; 0} is invalid, id can only be set once.
+     */
+<span class="fc" id="L19">    private long id = -1L;</span>
+
+    /**
+     * Customer's surname attribute, never null.
+     */
+<span class="fc" id="L24">    private String lastName = &quot;&quot;;</span>
+
+    /**
+     * None-surname name parts, never null.
+     */
+<span class="fc" id="L29">    private String firstName = &quot;&quot;;</span>
+
+    /**
+     * Customer contact information with multiple contacts.
+     */
+<span class="fc" id="L34">    private final List&lt;String&gt; contacts = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Default constructor.
+     */
+<span class="fc" id="L39">    public Customer() { }</span>
+
+    /**
+     * Constructor with single-String name argument.
+     * @param name single-String Customer name, e.g. &quot;Eric Meyer&quot;
+     * @throws IllegalArgumentException if name argument is null
+     */
+<span class="fc" id="L46">    public Customer(String name) {</span>
+<span class="fc" id="L47">        setName(name);  // throws IllegalArgumentException when name is null</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Id getter.
+     * @return customer id, returns {@code null}, if id is unassigned
+     */
+    public Long getId() {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        return id &gt;=  0? id : null;</span>
+    }
+
+    /**
+     * Id setter. Id can only be set once with valid id, id is immutable after assignment.
+     * @param id id value to assign if this.id attribute is still unassigned {@code id &lt; 0} and id argument is valid
+     * @throws IllegalArgumentException if id argument is invalid ({@code id &lt; 0})
+     * @return chainable self-reference
+     */
+    public Customer setId(long id) {
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        if(id &lt; 0)</span>
+<span class="fc" id="L66">            throw new IllegalArgumentException(&quot;invalid id (negative).&quot;);</span>
+        //
+        // set id only once; id cannot be changed afterwards
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        this.id = this.id &lt; 0? id : this.id;</span>
+<span class="fc" id="L70">        return this;</span>
+    }
+
+    /**
+     * LastName getter.
+     * @return value of lastName attribute, never null
+     */
+    public String getLastName() {
+<span class="fc" id="L78">        return lastName;</span>
+    }
+
+    /**
+     * FirstName getter.
+     * @return value of firstName attribute, never null
+     */
+    public String getFirstName() {
+<span class="fc" id="L86">        return firstName;</span>
+    }
+
+    /**
+     * Setter for first- (&quot;Eric&quot;) and lastName (&quot;Meyer&quot;) attributes.
+     * @param first value assigned to firstName attribute, null is ignored
+     * @param last value assigned to lastName attribute, null is ignored
+     * @return chainable self-reference
+     */
+    public Customer setName(String first, String last) {
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        this.firstName = first==null? this.firstName : trimStr(first);</span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">        this.lastName = last==null? this.lastName : trimStr(last);</span>
+<span class="fc" id="L98">        return this;</span>
+    }
+
+    /**
+     * Setter that splits a single-String name (e.g. &quot;Eric Meyer&quot;) into first- and lastName parts and assigns parts to corresponding attributes.
+     * @param name single-String name to split into first- and lastName parts
+     * @throws IllegalArgumentException if name argument is null
+     * @return chainable self-reference
+     */
+    public Customer setName(String name) {
+<span class="fc" id="L108">        splitName(name); // throws IllegalArgumentException when name is null or empty</span>
+<span class="fc" id="L109">        return this;</span>
+    }
+
+    /**
+     * Return the number of contacts.
+     * @return number of contacts
+     */
+    public int contactsCount() {
+<span class="fc" id="L117">        return contacts.size();</span>
+    }
+
+    /**
+     * Contacts getter (as {@code Iterable&lt;String&gt;}).
+     * @return contacts (as {@code Iterable&lt;String&gt;})
+     */
+    public Iterable&lt;String&gt; getContacts() {
+<span class="fc" id="L125">        return contacts;</span>
+    }
+
+    /**
+     * Add new contact for Customer. Only valid contacts (not null, &quot;&quot; nor duplicates) are added. Null-arguments raise IllegalArgumentException.
+     * @param contact contact (not null or &quot;&quot; nor duplicate), invalid contacts are ignored
+     * @throws IllegalArgumentException if contact argument is null or empty &quot;&quot; String
+     * @return chainable self-reference
+     */
+    public Customer addContact(String contact) {
+<span class="pc bpc" id="L135" title="2 of 4 branches missed.">        if(contact==null || contact.length()==0)</span>
+<span class="nc" id="L136">            throw new IllegalArgumentException(&quot;contact null or empty.&quot;);</span>
+        //
+<span class="fc" id="L138">        String cont = trimStr(contact);</span>
+<span class="fc" id="L139">        int minLength = 6;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        if(cont.length() &lt; minLength)</span>
+<span class="fc" id="L141">            throw new IllegalArgumentException(&quot;contact less than &quot; +</span>
+<span class="fc" id="L142">            minLength + &quot; characters: \&quot;&quot; + contact + &quot;\&quot;.&quot;);</span>
+        //
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if( ! contacts.contains(cont)) {</span>
+<span class="fc" id="L145">            contacts.add(cont);</span>
+        }
+<span class="fc" id="L147">        return this;</span>
+    }
+
+    /**
+     * Delete the i-th contact with {@code i &gt;= 0} and {@code i &lt; contactsCount()}, otherwise method has no effect.
+     * @param i index of contact to delete
+     */
+    public void deleteContact(int i) {
+<span class="fc bfc" id="L155" title="All 4 branches covered.">        if( i &gt;= 0 &amp;&amp; i &lt; contacts.size() ) {</span>
+<span class="fc" id="L156">            contacts.remove(i);</span>
+        }
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Delete all contacts.
+     */
+    public void deleteAllContacts() {
+<span class="fc" id="L164">        contacts.clear();</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Split single-String name into last- and first name parts.
+     * @param name single-String name to split into first- and last name parts
+     * @throws IllegalArgumentException if name argument is null
+     */
+    private void splitName(String name) {
+<span class="fc bfc" id="L173" title="All 2 branches covered.">        if(name==null)</span>
+<span class="fc" id="L174">            throw new IllegalArgumentException(&quot;name null.&quot;);</span>
+        //
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if(name.length()==0)</span>
+<span class="fc" id="L177">            throw new IllegalArgumentException(&quot;name empty.&quot;);</span>
+        //
+<span class="fc" id="L179">        String first=&quot;&quot;, last=&quot;&quot;;</span>
+<span class="fc" id="L180">        String[] spl1 = name.split(&quot;[,;]&quot;);</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if(spl1.length &gt; 1) {</span>
+            // two-section name with last name first
+<span class="fc" id="L183">            last = spl1[0];</span>
+<span class="fc" id="L184">            first = spl1[1];    // ignore higher splitters in first names</span>
+<span class="fc" id="L185">        } else {</span>
+            // no separator [,;] -&gt; split by white spaces;
+<span class="fc bfc" id="L187" title="All 2 branches covered.">            for(String s : name.split(&quot;\\s+&quot;)) {</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">                if( last.length() &gt; 0 ) {</span>
+                    // collect firstNames in order and lastName as last
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                    first += (first.length()==0? &quot;&quot; : &quot; &quot;) + last;</span>
+                }
+<span class="fc" id="L192">                last = s;</span>
+            }
+        }
+<span class="fc" id="L195">        setName(first, last);</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Trim leading and trailing white spaces, commata {@code [,;]} and quotes {@code [&quot;']} from String.
+     * 
+     * @param s String to trim.
+     * @return trimmed String.
+     */
+    private String trimStr(String s) {
+<span class="fc" id="L205">        s = s.replaceAll(&quot;^[\\s\&quot;',;]*&quot;, &quot;&quot;);   // trim leading white spaces[\s], commata[,;] and quotes['&quot;]</span>
+<span class="fc" id="L206">        s = s.replaceAll( &quot;[\\s\&quot;',;]*$&quot;, &quot;&quot;);  // trim trailing.</span>
+<span class="fc" id="L207">        return s;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Order.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">datamodel</a> &gt; <span class="el_source">Order.java</span></div><h1>Order.java</h1><pre class="source lang-java linenums">package datamodel;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
+import java.util.*;
+
+/**
+ * Class of entity type &lt;i&gt;Order&lt;/i&gt;.
+ * &lt;p&gt;
+ * Order defines a relationship between a Customer and the seller over items  to purchase.
+ * &lt;/p&gt;
+ * 
+ * @version &lt;code style=color:green&gt;{@value application.package_info#Version}&lt;/code&gt;
+ * @author &lt;code style=color:blue&gt;{@value application.package_info#Author}&lt;/code&gt;
+ */
+public class Order {
+
+    /**
+     * Unique id, null or &quot;&quot; are invalid values, id can be set only once.
+     */
+<span class="fc" id="L23">    private String id = null;</span>
+
+    /**
+     * Reference to owning Customer, final, never null.
+     */
+    private final Customer customer;
+
+    /**
+     * Date/time the order was created.
+     */
+    private Date created;
+
+    /**
+     * Items that are ordered as part of this order.
+     */
+<span class="fc" id="L38">    private final List&lt;OrderItem&gt; items = new ArrayList&lt;&gt;();</span>
+
+
+    /**
+     * Constructor with customer owning the order.
+     * @param customer customer who ows the order
+     * @throws IllegalArgumentException if customer argument is null or has no valid id
+     */
+<span class="fc" id="L46">    public Order(Customer customer) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if(customer==null)</span>
+<span class="fc" id="L48">            throw new IllegalArgumentException(&quot;Customer empty.&quot;);</span>
+<span class="pc bpc" id="L49" title="1 of 4 branches missed.">        if(customer.getId()==null || customer.getId() &lt; 0L)</span>
+<span class="fc" id="L50">            throw new IllegalArgumentException(&quot;Customer has invalid id.&quot;);</span>
+        //
+<span class="fc" id="L52">        this.customer = customer;</span>
+<span class="fc" id="L53">        this.created = new Date();</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Id getter.
+     * @return order id, returns {@code null}, if id is unassigned
+     */
+    public String getId() {
+<span class="fc" id="L61">        return id;</span>
+    }
+
+    /**
+     * Id setter. Id can only be set once with valid id, id is immutable after assignment.
+     * @param id only a valid id (not null or &quot;&quot;) sets the id attribute on first invocation
+     * @throws IllegalArgumentException if id argument is invalid ({@code id==null} or {@code id==&quot;&quot;})
+     * @return chainable self-reference.
+     */
+    public Order setId(String id) {
+<span class="fc bfc" id="L71" title="All 4 branches covered.">        if(id==null || id.length()==0)</span>
+<span class="fc" id="L72">            throw new IllegalArgumentException(&quot;invalid id (null or \&quot;\&quot;).&quot;);</span>
+        //
+        // set id only once; id cannot be changed afterwards
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        this.id = this.id==null? id : this.id;</span>
+<span class="fc" id="L76">        return this;</span>
+    }
+
+    /**
+     * Customer getter.
+     * @return owning customer, cannot be null.
+     */
+    public Customer getCustomer() {
+<span class="fc" id="L84">        return customer;</span>
+    }
+
+    /**
+     * CreationDate getter, returns the time/date when the order was created.
+     * @return time/date when order was created as long in ms since 01/01/1970
+     */
+    public long getCreationDate() {
+<span class="fc" id="L92">        return created.getTime();</span>
+    }
+
+    /**
+     * CreationDate setter for date/time in a valid range of {@code 01/01/2020, 00:00:00 &lt;= datetime &lt;= today +1 day, 23:59:59}.
+     * 
+     * Attemting to set createDate older than the lower bound {@code 01/01/2020, 00:00:00} or past the upper bound {@code today +1 day, 23:59:59} will raise an IllegalArgumentException.
+     * @param datetime time/date when order was created (in milliseconds since 01/01/1970)
+     * @throws IllegalArgumentException if datetime is outside the valid range {@code 01/01/2020, 00:00:00 &lt;= datetime &lt;= today +1 day, 23:59:59}
+     * @return chainable self-reference
+     */
+    public Order setCreationDate(long datetime) {
+<span class="fc" id="L104">        Instant dti = Instant.ofEpochMilli(datetime);</span>
+<span class="fc" id="L105">        LocalDateTime ldt = LocalDateTime.ofInstant(dti, ZoneOffset.UTC);</span>
+        // if(datetime &lt; lowerBound || datetime &gt; upperBound)
+<span class="fc bfc" id="L107" title="All 4 branches covered.">        if(ldt.isBefore(lowerLDT) || ldt.isAfter(upperLDT))</span>
+<span class="fc" id="L108">            throw new IllegalArgumentException(&quot;invalid datetime argument (outside bounds 01/01/2020, 00:00:00 &lt;= datetime &lt;= today +1 day, 23:59:59).&quot;);</span>
+        //
+<span class="fc" id="L110">        created.setTime(datetime);</span>
+<span class="fc" id="L111">        return this;</span>
+    }
+
+    /**
+     * Number of items that are part of the order.
+     * @return number of items ordered
+     */
+    public int itemsCount() {
+<span class="fc" id="L119">        return items.size();</span>
+    }
+
+    /**
+     * Ordered items getter.
+     * @return immutable collection of ordered items
+     */
+    public Iterable&lt;OrderItem&gt; getItems() {
+<span class="fc" id="L127">        return items;</span>
+    }
+
+    /**
+     * Create new item and add to order.
+     * @param article ordered article
+     * @param units units ordered
+     * @throws IllegalArgumentException if article is null or units not a positive {@code units &gt; 0} number
+     * @return chainable self-reference
+     */
+    public Order addItem(Article article, int units) {
+<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        if(article==null)</span>
+<span class="nc" id="L139">            throw new IllegalArgumentException(&quot;article is null.&quot;);</span>
+        //
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if(units &lt;= 0)</span>
+<span class="nc" id="L142">            throw new IllegalArgumentException(&quot;units &lt;= 0.&quot;);</span>
+        //
+<span class="fc" id="L144">        OrderItem item = new OrderItem(article, units);</span>
+<span class="fc" id="L145">        items.add(item);</span>
+<span class="fc" id="L146">        return this;</span>
+    }
+
+    /**
+     * Delete i-th item from order, {@code i &gt;= 0 &amp;&amp; i &lt; items.size()}, otherwise method has no effect
+     * @param i index of item to delete, only a valid index deletes item otherwise method has no effect
+     */
+    public void deleteItem(int i) {
+<span class="fc bfc" id="L154" title="All 4 branches covered.">        if(i &gt;= 0 &amp;&amp; i &lt; items.size()) {</span>
+<span class="fc" id="L155">            items.remove(i);</span>
+        }
+<span class="fc" id="L157">    }</span>
+
+    /**
+     * Delete all ordered items.
+     */
+    public void deleteAllItems() {
+<span class="fc" id="L163">        items.clear();</span>
+<span class="fc" id="L164">    }</span>
+
+
+    /**
+     * Bounds for valid Order creation date. An Order must be created after {@code 01/01/2020, 00:00:00}
+     * and before {@code today +1 day, 23:59:59}.
+     */
+<span class="fc" id="L171">    static final Instant instant = Instant.now();</span>
+<span class="fc" id="L172">    static final LocalDateTime nowLDT = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);</span>
+    // lower bound of valid order creation date-time is 01/01/2020, 00:00:00
+<span class="fc" id="L174">    static final LocalDateTime lowerLDT = LocalDateTime.of(2020, 1, 1, 0, 0, 0);</span>
+<span class="fc" id="L175">    static final LocalDateTime upperLDT = LocalDateTime.of(</span>
+<span class="fc" id="L176">            nowLDT.get(ChronoField.YEAR),</span>
+<span class="fc" id="L177">            nowLDT.get(ChronoField.MONTH_OF_YEAR),</span>
+<span class="fc" id="L178">            nowLDT.get(ChronoField.DAY_OF_MONTH),</span>
+<span class="fc" id="L179">            23, 59, 59)</span>
+        //
+<span class="fc" id="L181">        .plusDays(1);   // upper bound is tomorrow 23:59:59</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

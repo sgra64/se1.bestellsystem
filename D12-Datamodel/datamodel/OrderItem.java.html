@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderItem.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">datamodel</a> &gt; <span class="el_source">OrderItem.java</span></div><h1>OrderItem.java</h1><pre class="source lang-java linenums">package datamodel;
+
+/**
+ * Class of a line item referring to an article that is part of an Order. Orders may have multiple order items.
+ * 
+ * @version &lt;code style=color:green&gt;{@value application.package_info#Version}&lt;/code&gt;
+ * @author &lt;code style=color:blue&gt;{@value application.package_info#Author}&lt;/code&gt;
+ */
+public class OrderItem {
+
+    /**
+     * Ordered article, is never null.
+     */
+    private final Article article;
+
+    /**
+     * Number of units ordered, is always a positive number {@code &gt; 0}.
+     */
+    private int unitsOrdered;
+
+
+    /**
+     * Constructor of ordered line item with article and units arguments.
+     * @param article ordered article
+     * @throws IllegalArgumentException if article is null
+     * @param unitsOrdered number of articles ordered
+     * @throws IllegalArgumentException if {@code units &lt;= 0}
+     */
+<span class="fc" id="L29">    public OrderItem(Article article, int unitsOrdered) {</span>
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if(article==null)</span>
+<span class="nc" id="L31">            throw new IllegalArgumentException(&quot;article is null.&quot;);</span>
+        //
+<span class="fc" id="L33">        this.article = article;</span>
+<span class="fc" id="L34">        setUnitsOrdered(unitsOrdered);</span>
+<span class="fc" id="L35">    }</span>
+
+    /**
+     * Article getter.
+     * @return article ordered with this OrderItem
+     */
+    public Article getArticle() {
+<span class="fc" id="L42">        return article;</span>
+    }
+
+    /**
+     * units ordered getter.
+     * @return units of article ordered with this OrderItem
+     */
+    public int getUnitsOrdered() {
+<span class="nc" id="L50">        return unitsOrdered;</span>
+    }
+
+    /**
+     * Update units of an article ordered.
+     * @param units updated number of units ordered
+     * @throws IllegalArgumentException if {@code units &lt;= 0}
+     */
+    public void setUnitsOrdered(int units) {
+<span class="pc bpc" id="L59" title="1 of 2 branches missed.">        if(units &lt;= 0)</span>
+<span class="nc" id="L60">            throw new IllegalArgumentException(&quot;units &lt;= 0.&quot;);</span>
+        //
+<span class="fc" id="L62">        this.unitsOrdered = units;</span>
+<span class="fc" id="L63">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

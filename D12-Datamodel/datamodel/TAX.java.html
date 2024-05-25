@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TAX.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCo Coverage Report</a> &gt; <a href="index.source.html" class="el_package">datamodel</a> &gt; <span class="el_source">TAX.java</span></div><h1>TAX.java</h1><pre class="source lang-java linenums">package datamodel;
+
+/**
+ * Enumeration type for  tax rates that apply for various types of articles.
+ * &lt;p&gt;
+ * A business is obligated to collect taxes on sales based on an applicable tax rate.
+ * German sales tax (Umsatzsteuer) is a compounded value-added tax (VAT, Mehrwertsteuer, MwSt.), see
+ *  &lt;a href=&quot;https://de.wikipedia.org/wiki/Umsatzsteuer_(Deutschland)&quot;&gt;Umsatzsteuer (Deutschland)&lt;/a&gt;. VAT is included in final prices.
+ *  &lt;/p&gt;
+ * &lt;p&gt;
+ *  The regular tax rate is 19%. A reduced rate of 7% applies to food, books, medication and health care items.
+ * &lt;/p&gt;
+ * 
+ * @version &lt;code style=color:green&gt;{@value application.package_info#Version}&lt;/code&gt;
+ * @author &lt;code style=color:blue&gt;{@value application.package_info#Author}&lt;/code&gt;
+ */
+<span class="fc" id="L17">public enum TAX {</span>
+
+<span class="fc" id="L19">    /**</span>
+     * Tax free item, e.g. at duty free shopping at air ports
+     */
+<span class="fc" id="L22">    TAXFREE,</span>
+
+<span class="fc" id="L24">    /**</span>
+     * Full rate German Value-added Tax (Mehrwertsteuer, MwSt.) at 19%
+     */
+<span class="fc" id="L27">    GER_VAT,</span>
+
+<span class="fc" id="L29">    /**</span>
+     * Reduced rate German Value-added Tax (Mehrwertsteuer, MwSt.) at 7%
+     */
+<span class="fc" id="L32">    GER_VAT_REDUCED</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
