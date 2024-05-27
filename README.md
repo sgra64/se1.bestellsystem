@@ -1,5 +1,5 @@
 <!-- 
-    README.md in branch C12
+    README.md in branch C12-Customer
  -->
 
 # Aufgabe C12: *Customer - Class*
@@ -26,40 +26,77 @@ Content:
 &nbsp;
 ## 1. Setup
 
-Fetch branch `C12` into project `se1.bestellsystem` from the remote repository:
+Fetch branch `C12-Customer` into project `se1.bestellsystem` from the remote repository:
 
 ```sh
 cd se1.bestellsystem            # change into project directory
-source .env/setenv.sh           # sourcing the project
-git fetch origin C12            # fetch branch C12 from the remote repository
-```
-```
-remote: Enumerating objects: 22, done.
-remote: Counting objects: 100% (22/22), done.
-remote: Compressing objects: 100% (13/13), done.
-remote: Total 17 (delta 4), reused 17 (delta 4), pack-reused 0
-Unpacking objects: 100% (17/17), 12.29 KiB | 123.00 KiB/s, done.
-From https://github.com/sgra64/se1.bestellsystem
- * branch            C12        -> FETCH_HEAD
-```
 
+[ -d .git ] || git init         # initialize git, if project is not yet under git control
+
+# add link named 'se1-origin' pointing to the remote distribution repository
+git remote add se1-origin https://github.com/sgra64/se1.bestellsystem.git
+
+# fetch branch D12-Datamodel from the remote repository
+git fetch se1-origin C12-Customer:C12-Customer
+
+# merge content of fetched branch into current branch
+git merge --allow-unrelated-histories --strategy-option theirs C12-Customer
+```
+```
+git fetch se1-origin C12-Customer:C12-Customer
+remote: Enumerating objects: 64, done.
+remote: Counting objects: 100% (64/64), done.
+remote: Compressing objects: 100% (33/33), done.
+remote: Total 53 (delta 26), reused 47 (delta 20), pack-reused 0
+Unpacking objects: 100% (53/53), 21.68 KiB | 60.00 KiB/s, done.
+From https://github.com/sgra64/se1.bestellsystem
+ * [new branch]      C12-Customer -> C12-Customer
+ * [new branch]      C12-Customer -> se1-origin/C12-Customer
+
+git merge --allow-unrelated-histories --strategy-option theirs C12-Customer
+Merge made by the 'ort' strategy.
+ README.md                                          | 432 ++++------
+ src/application/Application_C1.java                | 273 +++++++
+ src/application/Runtime.java                       |   6 +-
+ src/application/package-info.java                  |   2 +-
+ src/datamodel/Customer.java                        |  60 ++
+ src/datamodel/Customer.mdj                         | 894 +++++++++++++++++++++
+ src/datamodel/package-info.java                    |  12 +
+ src/module-info.java                               |   1 +
+ .../datamodel/Customer_100_Constructor_Tests.java  |  93 +++
+ tests/datamodel/Customer_200_SetId_Tests.java      | 102 +++
+ tests/datamodel/Customer_300_SetName_Tests.java    | 161 ++++
+ tests/datamodel/Customer_400_Contacts_Tests.java   | 214 +++++
+ .../Customer_500_SetNameExtended_Tests.java        | 182 +++++
+ 13 files changed, 2156 insertions(+), 276 deletions(-)
+ create mode 100644 src/application/Application_C1.java
+ create mode 100644 src/datamodel/Customer.java
+ create mode 100644 src/datamodel/Customer.mdj
+ create mode 100644 src/datamodel/package-info.java
+ create mode 100644 tests/datamodel/Customer_100_Constructor_Tests.java
+ create mode 100644 tests/datamodel/Customer_200_SetId_Tests.java
+ create mode 100644 tests/datamodel/Customer_300_SetName_Tests.java
+ create mode 100644 tests/datamodel/Customer_400_Contacts_Tests.java
+ create mode 100644 tests/datamodel/Customer_500_SetNameExtended_Tests.java
+```
+<!-- 
 `FETCH_HEAD` points to the fetched branch. Next is to create a local branch
 (of same name) that has the same content.
 
 
 ```sh
-git checkout FETCH_HEAD -b C12      # create local branch C12
+git checkout FETCH_HEAD -b C12-Customer     # create local branch C12-Customer
 git branch -avv
 ```
 ```
-Switched to a new branch 'C12'
-* C12                 39a322b initial src, test for C12 Customer
+Switched to a new branch 'C12-Customer'
+* C12-Customer                 39a322b initial src, test for C12-Customer Customer
   main                2c438ae [origin/main] commit initial project files and sources
   remotes/origin/HEAD -> origin/main
   remotes/origin/main 2c438ae commit initial project files and sources
 ```
 
-We are now on a new local branch `C12` (*) with the fetched content.
+We are now on a new local branch `C12-Customer` (*) with the fetched content. -->
 
 ```sh
 find src tests                  # show content of src and test
@@ -87,8 +124,17 @@ tests/datamodel/Customer_400_Contacts_Tests.java
 tests/datamodel/Customer_500_SetNameExtended_Tests.java
 ```
 
+&nbsp;
+
+Source the project:
+
+```sh
+source .env/setenv.sh
+```
+
 
 &nbsp;
+
 ## 2. Building the Application
 
 Compile code with:
@@ -137,7 +183,7 @@ bin/test-classes/datamodel/Customer_500_SetNameExtended_Tests.class
 &nbsp;
 ## 3. Running the Application
 
-[Application_C1.java](https://github.com/sgra64/se1.bestellsystem/blob/C12/src/application/Application_C1.java)
+[Application_C1.java](https://github.com/sgra64/se1.bestellsystem/blob/C12-Customer/src/application/Application_C1.java)
 creates *Customer* objects:
 
 ```java
@@ -182,7 +228,7 @@ Output (table is initially empty):
 ## 4. Running JUnit Tests
 
 Implement methods in
-[Customer.java](https://github.com/sgra64/se1.bestellsystem/blob/C12/src/application/Customer.java)
+[Customer.java](https://github.com/sgra64/se1.bestellsystem/blob/C12-Customer/src/application/Customer.java)
 starting with Constructors.
 
 Add Tests one-after-another as you progress with implementations.
