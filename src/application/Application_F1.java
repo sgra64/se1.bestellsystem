@@ -137,7 +137,6 @@ public class Application_F1 implements Runnable {
             // Eric's 1st order
             factory.create("8592356245", eric)	  // new order for Eric
                 .map(order -> order
-                    .addItem(teller, 4)
                     .addItem(teller, 4)     // + item: 4 Teller, 4x 6.49 €
                     .addItem(becher, 8)     // + item: 8 Becher, 8x 1.49 €
                     .addItem(buch_OOP, 1)   // + item: 1 Buch "OOP", 1x 79.95 €, 7% MwSt (5.23€)

@@ -29,11 +29,11 @@ Content:
     - branch: [D12-Datamodel](https://github.com/sgra64/se1.bestellsystem/tree/D12-Datamodel),
     - branch: [F12-Refactoring](https://github.com/sgra64/se1.bestellsystem/tree/F12-Refactoring).
 
-- [F1: Building Components](#d1-building-components)
+- [F1: Building Components](#f1-building-components)
     - Build component that implements the [system.Calculator](src/system/Calculator.java) interface
     - Build component that implements the [system.Formatter](src/system/Formatter.java) interface
 
-- [F2: Repository](#d2-repository)
+- [F2: Repository](#f2-repository)
     - Replace *mock*-component [system.impl.MockRepository.java](src/system/impl/MockRepository.java)
 
 - [Release Preparation](#release-preparation)
@@ -119,6 +119,60 @@ The project can now be sourced to set the project environment:
 source .env/setenv.sh           # source project
 ```
 
+The programm is not fully complete, it will output:
+
+```
+Hello, Application_F1
+(3) Customer objects added.
+(9) Article objects added.
+(3) Order objects added.
+---
+Kunden:
++----------+---------------------------------+--------------------------------------+
+| Kund.-ID | Name                            | Kontakt                              |
++----------+---------------------------------+--------------------------------------+
+|   892474 | Eric                            | --                                   |
+|   643270 | Anne                            | --                                   |
+|   286516 | Tim                             | --                                   |
++----------+---------------------------------+--------------------------------------+
+
+Artikel:
++----------+---------------------------------+---------------+----------------------+
+|Artikel-ID| Beschreibung                    |      Preis CUR|  Mehrwertsteuersatz  |
++----------+---------------------------------+---------------+----------------------+
+|SKU-458362| Tasse                           |        299 EUR|   0.0% GER_VAT       |
+|SKU-693856| Becher                          |        149 EUR|   0.0% GER_VAT       |
+|SKU-518957| Kanne                           |       1999 EUR|   0.0% GER_VAT       |
+|SKU-638035| Teller                          |        649 EUR|   0.0% GER_VAT       |
+|SKU-278530| Buch "Java"                     |       4990 EUR|   0.0% GER_VAT_REDU  |
+|SKU-425378| Buch "OOP"                      |       7995 EUR|   0.0% GER_VAT_REDU  |
+|SKU-300926| Pfanne                          |       4999 EUR|   0.0% GER_VAT       |
+|SKU-663942| Fahrradhelm                     |      16900 EUR|   0.0% GER_VAT       |
+|SKU-583978| Fahrradkarte                    |        695 EUR|   0.0% GER_VAT_REDU  |
++----------+---------------------------------+---------------+----------------------+
+
+Bestellungen:
++----------+-------------------------------------------------+----------------------+
+|Bestell-ID| Bestellungen                  MwSt*        Preis|     MwSt       Gesamt|
++----------+-------------------------------------------------+----------------------+
+|8592356245| Eric's Bestellung:                              |                      |
+|          |  - 4 Teller, 4x 649              0             0|                      |
+|          |  - 4 Teller, 4x 649              0             0|                      |
+|          |  - 8 Becher, 8x 149              0             0|                      |
+|          |  - 1 Buch "OOP"                  0*            0|                      |
+|          |  - 4 Tasse, 4x 299               0             0|        0            0|
++----------+-------------------------------------------------+----------------------+
+|3563561357| Anne's Bestellung:                              |                      |
+|          |  - 2 Teller, 2x 649              0             0|                      |
+|          |  - 2 Tasse, 2x 299               0             0|        0            0|
++----------+-------------------------------------------------+----------------------+
+|5234968294| Eric's Bestellung:                              |                      |
+|          |  - 1 Kanne                       0             0|        0            0|
++----------+-------------------------------------------------+----------------------+
+                                                      Gesamt:|        0            0|
+                                                             +======================+
+```
+
 
 &nbsp;
 
@@ -139,6 +193,71 @@ source .env/setenv.sh           # source project
 
 ### D1.a Datamodel Generation and Completion -->
 
+Components for interfaces:
+
+- [Calculator](src/system/Calculator.java) and
+
+- [Formatter](src/system/Formatter.java)
+
+are not properly implemented causing incomplete output after setup.
+
+Build proper implementation classes in package [src/system/impl](src/system/impl)
+for both components.
+
+Correct output after this stage should show correct calculations and
+correct formatting:
+
+```
+Hello, Application_F1
+(3) Customer objects added.
+(9) Article objects added.
+(3) Order objects added.
+---
+Kunden:
++----------+---------------------------------+--------------------------------------+
+| Kund.-ID | Name                            | Kontakt                              |
++----------+---------------------------------+--------------------------------------+
+|   892474 | Meyer, Eric                     | eric98@yahoo.com, (+1 contacts)      |
+|   643270 | Bayer, Anne                     | anne24@yahoo.de, (+2 contacts)       |
+|   286516 | Schulz-Mueller, Tim             | tim2346@gmx.de                       |
++----------+---------------------------------+--------------------------------------+
+
+Artikel:
++----------+---------------------------------+---------------+----------------------+
+|Artikel-ID| Beschreibung                    |      Preis CUR|  Mehrwertsteuersatz  |
++----------+---------------------------------+---------------+----------------------+
+|SKU-458362| Tasse                           |       2.99 EUR|  19.0% GER_VAT       |
+|SKU-693856| Becher                          |       1.49 EUR|  19.0% GER_VAT       |
+|SKU-518957| Kanne                           |      19.99 EUR|  19.0% GER_VAT       |
+|SKU-638035| Teller                          |       6.49 EUR|  19.0% GER_VAT       |
+|SKU-278530| Buch "Java"                     |      49.90 EUR|   7.0% GER_VAT_REDU  |
+|SKU-425378| Buch "OOP"                      |      79.95 EUR|   7.0% GER_VAT_REDU  |
+|SKU-300926| Pfanne                          |      49.99 EUR|  19.0% GER_VAT       |
+|SKU-663942| Fahrradhelm                     |     169.00 EUR|  19.0% GER_VAT       |
+|SKU-583978| Fahrradkarte                    |       6.95 EUR|   7.0% GER_VAT_REDU  |
++----------+---------------------------------+---------------+----------------------+
+
+Bestellungen:
++----------+-------------------------------------------------+----------------------+
+|Bestell-ID| Bestellungen                  MwSt*        Preis|     MwSt       Gesamt|
++----------+-------------------------------------------------+----------------------+
+|8592356245| Eric's Bestellung:                              |                      |
+|          |  - 4 Teller, 4x 6.49          4.14     25.96 EUR|                      |
+|          |  - 8 Becher, 8x 1.49          1.90     11.92 EUR|                      |
+|          |  - 1 Buch "OOP"               5.23*    79.95 EUR|                      |
+|          |  - 4 Tasse, 4x 2.99           1.91     11.96 EUR|    13.18   129.79 EUR|
++----------+-------------------------------------------------+----------------------+
+|3563561357| Anne's Bestellung:                              |                      |
+|          |  - 2 Teller, 2x 6.49          2.07     12.98 EUR|                      |
+|          |  - 2 Tasse, 2x 2.99           0.95      5.98 EUR|     3.02    18.96 EUR|
++----------+-------------------------------------------------+----------------------+
+|5234968294| Eric's Bestellung:                              |                      |
+|          |  - 1 Kanne                    3.19     19.99 EUR|     3.19    19.99 EUR|
++----------+-------------------------------------------------+----------------------+
+                                                      Gesamt:|    19.39   168.74 EUR|
+                                                             +======================+
+```
+
 
 &nbsp;
 
@@ -157,15 +276,20 @@ Datamodel objects:
 objects are examples of type `T`.
 `Customer` uses `Long` as `ID`-type, the other two classes use `String` as `ID`-type.
 
-<!-- - D2.a - [New Articles, Customers and Orders](#d2a-new-articles-customers-and-orders)
+[src/system/impl/MockRepository.java](src/system/impl/MockRepository.java)
+is a simplified and implementation of interface
+[src/system/Repository.java](src/system/Repository.java).
 
-- D2.b - [*find()* method](#d2b-find-method)
+It has limitations, e.g. it can only store three `Customer` objects and also
+only implements few methods.
 
-- D2.c - [*printOrder()* method](#d2c-printorder-method)
+Build proper a proper implementation class for `Repository` in package
+[src/system/impl](src/system/impl). Complete all methods.
 
-- D2.d - [Order Value and Tax Calculations](#d2d-order-value-and-tax-calculations) -->
+Remove [src/system/impl/MockRepository.java](src/system/impl/MockRepository.java)
+from the project.
 
-
+The correct output after this stage should show the full set of orders:
 
 &nbsp;
 
@@ -207,78 +331,75 @@ java -jar bin/application-1.0.0-SNAPSHOT.jar
 Final output of correct order table:
 
 ```
-java application.Application
 Hello, Application_F1
-(6) Customer objects built.
-(9) Article objects built.
-(7) Order objects built.
+(6) Customer objects added.
+(9) Article objects added.
+(7) Order objects added.
 ---
 Kunden:
-+----------+----------------------------+--------------------------------------+
-| Kund.-ID | Name                       | Kontakt                              |
-+----------+----------------------------+--------------------------------------+
-|   892474 | Meyer, Eric                | eric98@yahoo.com, (+1 contacts)      |
-|   643270 | Bayer, Anne                | anne24@yahoo.de, (+2 contacts)       |
-|   286516 | Schulz-Mueller, Tim        | tim2346@gmx.de                       |
-|   412396 | Blumenfeld, Nadine-Ulla    | +49 152-92454                        |
-|   456454 | Abdelalim, Khaled Saad Moha| +49 1524-12948210                    |
-|   651286 | Neumann, Lena              | lena228@gmail.com                    |
-+----------+----------------------------+--------------------------------------+
++----------+---------------------------------+--------------------------------------+
+| Kund.-ID | Name                            | Kontakt                              |
++----------+---------------------------------+--------------------------------------+
+|   286516 | Schulz-Mueller, Tim             | tim2346@gmx.de                       |
+|   456454 | Abdelalim, Khaled Saad Mohamed  | +49 1524-12948210                    |
+|   892474 | Meyer, Eric                     | eric98@yahoo.com, (+1 contacts)      |
+|   412396 | Blumenfeld, Nadine-Ulla         | +49 152-92454                        |
+|   643270 | Bayer, Anne                     | anne24@yahoo.de, (+2 contacts)       |
+|   651286 | Neumann, Lena                   | lena228@gmail.com                    |
++----------+---------------------------------+--------------------------------------+
 
 Artikel:
-+----------+----------------------------+---------------+----------------------+
-|Artikel-ID| Beschreibung               |      Preis CUR|  Mehrwertsteuersatz  |
-+----------+----------------------------+---------------+----------------------+
-|SKU-458362| Tasse                      |       2.99 EUR|  19.0% GER_VAT       |
-|SKU-693856| Becher                     |       1.49 EUR|  19.0% GER_VAT       |
-|SKU-518957| Kanne                      |      19.99 EUR|  19.0% GER_VAT       |
-|SKU-638035| Teller                     |       6.49 EUR|  19.0% GER_VAT       |
-|SKU-278530| Buch "Java"                |      49.90 EUR|   7.0% GER_VAT_REDU  |
-|SKU-425378| Buch "OOP"                 |      79.95 EUR|   7.0% GER_VAT_REDU  |
-|SKU-300926| Pfanne                     |      49.99 EUR|  19.0% GER_VAT       |
-|SKU-663942| Fahrradhelm                |     169.00 EUR|  19.0% GER_VAT       |
-|SKU-583978| Fahrradkarte               |       6.95 EUR|   7.0% GER_VAT_REDU  |
-+----------+----------------------------+---------------+----------------------+
++----------+---------------------------------+---------------+----------------------+
+|Artikel-ID| Beschreibung                    |      Preis CUR|  Mehrwertsteuersatz  |
++----------+---------------------------------+---------------+----------------------+
+|SKU-693856| Becher                          |       1.49 EUR|  19.0% GER_VAT       |
+|SKU-638035| Teller                          |       6.49 EUR|  19.0% GER_VAT       |
+|SKU-425378| Buch "OOP"                      |      79.95 EUR|   7.0% GER_VAT_REDU  |
+|SKU-300926| Pfanne                          |      49.99 EUR|  19.0% GER_VAT       |
+|SKU-458362| Tasse                           |       2.99 EUR|  19.0% GER_VAT       |
+|SKU-278530| Buch "Java"                     |      49.90 EUR|   7.0% GER_VAT_REDU  |
+|SKU-518957| Kanne                           |      19.99 EUR|  19.0% GER_VAT       |
+|SKU-663942| Fahrradhelm                     |     169.00 EUR|  19.0% GER_VAT       |
+|SKU-583978| Fahrradkarte                    |       6.95 EUR|   7.0% GER_VAT_REDU  |
++----------+---------------------------------+---------------+----------------------+
 
 Bestellungen:
-+----------+--------------------------------------------+----------------------+
-|Bestell-ID| Bestellungen             MwSt*        Preis|     MwSt       Gesamt|
-+----------+--------------------------------------------+----------------------+
-|8592356245| Eric's Bestellung:                         |                      |
-|          |  - 4 Teller, 4x 6.49     4.14     25.96 EUR|                      |
-|          |  - 8 Becher, 8x 1.49     1.90     11.92 EUR|                      |
-|          |  - 1 Buch "OOP"          5.23*    79.95 EUR|                      |
-|          |  - 4 Tasse, 4x 2.99      1.91     11.96 EUR|    13.18   129.79 EUR|
-+----------+--------------------------------------------+----------------------+
-|3563561357| Anne's Bestellung:                         |                      |
-|          |  - 2 Teller, 2x 6.49     2.07     12.98 EUR|                      |
-|          |  - 2 Tasse, 2x 2.99      0.95      5.98 EUR|     3.02    18.96 EUR|
-+----------+--------------------------------------------+----------------------+
-|5234968294| Eric's Bestellung:                         |                      |
-|          |  - 1 Kanne               3.19     19.99 EUR|     3.19    19.99 EUR|
-+----------+--------------------------------------------+----------------------+
-|6135735635| Nadine-Ulla's Bestel                       |                      |
-|          |  - 12 Teller, 12x 6.    12.43     77.88 EUR|                      |
-|          |  - 1 Buch "Java"         3.26*    49.90 EUR|                      |
-|          |  - 1 Buch "OOP"          5.23*    79.95 EUR|    20.92   207.73 EUR|
-+----------+--------------------------------------------+----------------------+
-|6173043537| Lena's Bestellung:                         |                      |
-|          |  - 1 Buch "Java"         3.26*    49.90 EUR|                      |
-|          |  - 1 Fahrradkarte        0.45*     6.95 EUR|     3.71    56.85 EUR|
-+----------+--------------------------------------------+----------------------+
-|7372561535| Eric's Bestellung:                         |                      |
-|          |  - 1 Fahrradhelm        26.98    169.00 EUR|                      |
-|          |  - 1 Fahrradkarte        0.45*     6.95 EUR|    27.43   175.95 EUR|
-+----------+--------------------------------------------+----------------------+
-|4450305661| Eric's Bestellung:                         |                      |
-|          |  - 3 Tasse, 3x 2.99      1.43      8.97 EUR|                      |
-|          |  - 3 Becher, 3x 1.49     0.71      4.47 EUR|                      |
-|          |  - 1 Kanne               3.19     19.99 EUR|     5.33    33.43 EUR|
-+----------+--------------------------------------------+----------------------+
-                                                 Gesamt:|    76.78   642.70 EUR|
-                                                        +======================+
-done.
++----------+-------------------------------------------------+----------------------+
+|Bestell-ID| Bestellungen                  MwSt*        Preis|     MwSt       Gesamt|
++----------+-------------------------------------------------+----------------------+
+|6135735635| Nadine-Ulla's Bestellung:                       |                      |
+|          |  - 12 Teller, 12x 6.49       12.43     77.88 EUR|                      |
+|          |  - 1 Buch "Java"              3.26*    49.90 EUR|                      |
+|          |  - 1 Buch "OOP"               5.23*    79.95 EUR|    20.92   207.73 EUR|
++----------+-------------------------------------------------+----------------------+
+|6173043537| Lena's Bestellung:                              |                      |
+|          |  - 1 Buch "Java"              3.26*    49.90 EUR|                      |
+|          |  - 1 Fahrradkarte             0.45*     6.95 EUR|     3.71    56.85 EUR|
++----------+-------------------------------------------------+----------------------+
+|8592356245| Eric's Bestellung:                              |                      |
+|          |  - 4 Teller, 4x 6.49          4.14     25.96 EUR|                      |
+|          |  - 8 Becher, 8x 1.49          1.90     11.92 EUR|                      |
+|          |  - 1 Buch "OOP"               5.23*    79.95 EUR|                      |
+|          |  - 4 Tasse, 4x 2.99           1.91     11.96 EUR|    13.18   129.79 EUR|
++----------+-------------------------------------------------+----------------------+
+|5234968294| Eric's Bestellung:                              |                      |
+|          |  - 1 Kanne                    3.19     19.99 EUR|     3.19    19.99 EUR|
++----------+-------------------------------------------------+----------------------+
+|4450305661| Eric's Bestellung:                              |                      |
+|          |  - 3 Tasse, 3x 2.99           1.43      8.97 EUR|                      |
+|          |  - 3 Becher, 3x 1.49          0.71      4.47 EUR|                      |
+|          |  - 1 Kanne                    3.19     19.99 EUR|     5.33    33.43 EUR|
++----------+-------------------------------------------------+----------------------+
+|7372561535| Eric's Bestellung:                              |                      |
+|          |  - 1 Fahrradhelm             26.98    169.00 EUR|                      |
+|          |  - 1 Fahrradkarte             0.45*     6.95 EUR|    27.43   175.95 EUR|
++----------+-------------------------------------------------+----------------------+
+|3563561357| Anne's Bestellung:                              |                      |
+|          |  - 2 Teller, 2x 6.49          2.07     12.98 EUR|                      |
+|          |  - 2 Tasse, 2x 2.99           0.95      5.98 EUR|     3.02    18.96 EUR|
++----------+-------------------------------------------------+----------------------+
+                                                      Gesamt:|    76.78   642.70 EUR|
+                                                             +======================+
 ```
 
 The packaged `.jar`-file: `application-1.0.0-SNAPSHOT.jar` can now be distributed.
-
