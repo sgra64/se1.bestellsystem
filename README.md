@@ -1,445 +1,284 @@
 <!-- 
-    README.md for project: *se1-bestellsystem*
+    README.md in branch D12-Datamodel
  -->
 
+# Aufgabe F12: *Refactoring*
 
-# Project: *se1-bestellsystem*
+[Refactoring](https://refactoring.guru/refactoring)
+is the process of changing (improving) the structure of
+the codebase without changing its function.
 
-The project implements a simple order processing system and is part
-of the *Software Engineering 1* class.
+The program will perform the same function after the refactoring
+compared to what it performed before the refactoring.
+
+The [datamodel](src/datamodel) has already been well-structured.
+
+A problem is that all functions of the program were included in
+a single file [Application_D1.java](src/application/Application_D1.java)
+
+Goal of the Refactoring is a **Component architecture** that introduces
+component objects with interfaces.
+
+<img src="https://raw.githubusercontent.com/sgra64/se1.bestellsystem/markup/F12-Refactoring/F1_component_diagram.png" alt="drawing" width="800"/>
+
 
 Content:
 
- 1. [Project Setup](#1-project-setup)
+- [Setup](#1-setup) - Fetching Branches and Sourcing the Project
+    - branch: [C12-Customer](https://github.com/sgra64/se1.bestellsystem/tree/C12-Customer),
+    - branch: [D12-Datamodel](https://github.com/sgra64/se1.bestellsystem/tree/D12-Datamodel),
+    - branch: [F12-Refactoring](https://github.com/sgra64/se1.bestellsystem/tree/F12-Refactoring).
 
- 2. [Building the Application](#2-building-the-application)
+- [F1: Building Components](#d1-building-components)
+    - Build component that implements the [system.Calculator](src/system/Calculator.java) interface
+    - Build component that implements the [system.Formatter](src/system/Formatter.java) interface
 
- 3. [Running the Application](#3-running-the-application)
+- [F2: Repository](#d2-repository)
+    - Replace *mock*-component [system.impl.MockRepository.java](src/system/impl/MockRepository.java)
 
- 4. [Running JUnit Tests](#4-running-junit-tests)
-
- 5. [Generating Javadoc](#5-generating-javadoc)
-
- 6. [Packaging the Application](#6-packaging-the-application)
-
- 7. [Running the Packaged Application](#7-running-the-packaged-application)
-
- 8. [Project Structure](#8-project-structure)
-
-
-&nbsp;
-## 1. Project Setup
-
-Clone project `se1.bestellsystem` from the repository:
-
-```sh
-git clone https://github.com/sgra64/se1.bestellsystem.git
-```
-
-Change (cd) into new project repository and create sub-directory for `branches`:
-
-```sh
-cd se1.bestellsystem                # change into new project directory
-mkdir branches                      # create new sub-directory for branches
-```
-
-Change (cd) into `branches` and clone branch `libs` from prior `se1.play` repository:
-
-```sh
-cd branches                         # cd (change directory) into branches directory
-git clone -b libs --single-branch https://github.com/sgra64/se1.play.git libs
-cd ..                               # cd back to project directory
-```
-
-Source the new project in project directory:
-
-```sh
-source .env/setenv.sh
-```
-
-```sh
-ls -la                              # show content of project directory
-```
-
-Project directory after sourcing. `libs` has been created as a
-*symbolic link* to `branches/libs/libs`.
-
-```
-drwxr-xr-x 1 svgr2 Kein     0 May  4 19:00 .
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:54 ..
--rw-r--r-- 1 svgr2 Kein  2732 May  4 18:59 .classpath
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:59 .env
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:42 .git
--rw-r--r-- 1 svgr2 Kein  1461 May  4 18:59 .gitignore
--rw-r--r-- 1 svgr2 Kein   663 May  4 19:00 .project
-drwxr-xr-x 1 svgr2 Kein     0 May  4 19:07 .vscode
-drwxr-xr-x 1 svgr2 Kein     0 May  4 19:00 bin
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:59 branches
-lrwxrwxrwx 1 svgr2 Kein    18 May  4 18:59 libs -> branches/libs/libs   <-- symbolic link
--rw-r--r-- 1 svgr2 Kein 14198 May  4 19:01 README.md
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:22 resources
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:17 src
-drwxr-xr-x 1 svgr2 Kein     0 May  4 18:26 tests
-```
-
-Show that `CLASSPATH` variable is set:
-
-```sh
-echo $CLASSPATH | tr "[;:]" "\n"
-```
-
-Mind that paths to libraries follow the `libs` symbolic link.
-
-```
-bin/classes
-bin/test-classes
-bin/resources
-branches/libs/libs/jackson/jackson-annotations-2.13.0.jar
-branches/libs/libs/jackson/jackson-core-2.13.0.jar
-branches/libs/libs/jackson/jackson-databind-2.13.0.jar
-branches/libs/libs/jacoco/jacocoagent.jar
-branches/libs/libs/jacoco/jacococli.jar
-branches/libs/libs/junit/apiguardian-api-1.1.2.jar
-branches/libs/libs/junit/junit-jupiter-api-5.9.3.jar
-branches/libs/libs/junit/junit-platform-commons-1.9.3.jar
-branches/libs/libs/junit/opentest4j-1.2.0.jar
-done.
-```
+- [Release Preparation](#release-preparation)
+    - Packaging the Application
+    - Run the packaged Application
 
 
 &nbsp;
-## 2. Building the Application
 
-The [*Build-Process*](https://www.techbin.com/searchsoftwarequality/definition/build)
-consists of operations such as:
+## 1. Setup
 
- - compile source code
+Merge files from the distribution branch
+[D12-Datamodel](https://github.com/sgra64/se1.bestellsystem/tree/D12-Datamodel)
+into project `se1.bestellsystem`.
 
- - compile tests
-
- - build javadocs
-
- - package the application to final '.jar' file
-
-Command `show` prints operations that can be used for the *Build-Process*:
+Setup assumes the project is under `git` control. Initialize `git`
+if this is not yet the case (skip step: `git init` otherwise).
 
 ```sh
-show
-show --all
+cd se1.bestellsystem            # change into project directory
+
+[ -d .git ] || git init         # initialize git, if project is not yet under git control
+
+# add link named 'se1-origin' pointing to the remote distribution repository
+git remote add se1-origin https://github.com/sgra64/se1.bestellsystem.git
+
+# fetch branches from the remote repository (if not yet fetched)
+git fetch se1-origin C12-Customer:C12-Customer
+git fetch se1-origin D12-Datamodel:D12-Datamodel
+git fetch se1-origin F12-Datamodel:F12-Datamodel
+
+# merge content of fetched branch into current branch
+git merge --allow-unrelated-histories --strategy-option theirs C12-Customer
+git merge --allow-unrelated-histories --strategy-option theirs D12-Datamodel
+git merge --allow-unrelated-histories --strategy-option theirs F12-Datamodel
 ```
 
-```
-source | project:
-  source .env/setenv.sh
-
-classpath | cp:
-  echo $CLASSPATH | tr "[;:]" "\n"
-
-compile:
-  javac $(find src -name '*.java') -d bin/classes; \
-  copy resources bin/resources
-
-compile-tests:
-  javac $(find tests -name '*.java') -d bin/test-classes; \
-  copy resources bin/resources
-
-resources:
-  copy resources bin/resources
-
-run:
-  java application.Application
-
-run-tests:
-  java -jar branches/libs/libs/junit-platform-console-standalone-1.9.2.jar \
-    $(eval echo $JUNIT_OPTIONS) --scan-class-path
-
-javadoc:
-  javadoc -d docs $(eval echo $JDK_JAVADOC_OPTIONS) \
-    $(cd src; find . -type f | xargs dirname | uniq | cut -c 3-)
-
-clean:
-  rm -rf bin logs docs
-
-wipe:
-```
-
-Execute build steps with the `build` or `mk` (make) commands:
+Files that came with the merge of the branch:
 
 ```sh
-mk compile                        # compile source code
-mk compile-tests                  # compile test code
-
-mk clean compile compile-tests    # execute all commands in order
+find src
 ```
 
-The last command is called a *clean build* since it clears the `bin` directory
-(removes all content) before re-compiling the source code.
+```
+src
+src/application
+src/application/Application.java
+src/application/Application_C1.java
+src/application/Application_D1.java
+src/application/Application_F1.java     <-- new driver class
+src/application/package-info.java
+src/application/Runtime.java
+src/datamodel                       <-- complete datamodel classes
+src/datamodel/Article.java
+src/datamodel/Currency.java
+src/datamodel/Customer.java
+src/datamodel/Order.java
+src/datamodel/OrderItem.java
+src/datamodel/package-info.java
+src/datamodel/TAX.java
+src/module-info.java
+src/system                          <-- new package with public component interfaces
+src/system/Calculator.java
+src/system/DataBuilder.java
+src/system/DataFactory.java
+src/system/DataStore.java
+src/system/Formatter.java
+src/system/impl                     <-- implementation classes of system interfaces
+src/system/impl/DataStoreImpl.java
+src/system/impl/IoC_Impl.java
+src/system/impl/MockRepositoryImpl.java
+src/system/impl/PrinterImpl.java
+src/system/impl/TableFormatter.java
+src/system/IoC.java
+src/system/package-info.java
+src/system/Printer.java
+src/system/Repository.java
+```
 
-The result is in the `bin` directory:
+The project can now be sourced to set the project environment:
 
 ```sh
-find bin
-```
-
-Output
-
-```
-bin
-bin/application-1.0.0-SNAPSHOT.jar
-bin/classes
-bin/classes/application
-bin/classes/application/Application.class
-bin/classes/application/package-info.class
-bin/classes/application/package_info.class
-bin/classes/application/Runtime$1.class
-bin/classes/application/Runtime$SupplierWithExceptions.class
-bin/classes/application/Runtime.class
-bin/classes/module-info.class
-bin/resources
-bin/resources/application.properties
-bin/resources/logging.properties
-bin/test-classes
-bin/test-classes/application
-bin/test-classes/application/Application_0_always_pass_Tests.class
+source .env/setenv.sh           # source project
 ```
 
 
 &nbsp;
-## 3. Running the Application
 
-After building the application, it can be run using the `run` command
-and passing a number `n` to factorize.
+## F1: Building Components
 
-```sh
-mk run a b c
-```
+<!-- - D1.a - [Datamodel Generation and Completion](#d1a-datamodel-generation-and-completion)
 
-Output:
+- D1.b - [Building and Running the Application](#d1b-building-and-running-the-application)
 
-```
-java application.Application a b c
-Hello, Application
-arg: a
-arg: b
-arg: c
-done.
-```
+- D1.c - [Running JUnit Tests](#d1c-running-junit-tests)
+
+- D1.d - [Code Coverage Report](#d1d-code-coverage-report)
+
+- D1.e - [Javadoc for Complete Datamodel](#d1e-javadoc-for-complete-datamodel) -->
+
+
+<!-- &nbsp;
+
+### D1.a Datamodel Generation and Completion -->
 
 
 &nbsp;
-## 4. Running JUnit Tests
 
-[JUnit](https://www.codeflow.site/de/article/junit-assertions#_4_junit_5_assertions)
-is a widely used framework for Unit-testing.
+## F2: Repository
 
-JUnit is available in the project through:
+The [Repository](src/system/Repository.java) component mirrors
+Spring Boot's `CrudRepository`
+([javadoc](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html)).
 
-- libraries in [libs/junit](), e.g.
-  [junit-jupiter-api-5.9.3.jar](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api)
+A **`Repository<T, ID>`** stores a collection of objects of type `T` that use
+an identifier id of type `ID`.
+Datamodel objects:
+[Customer](src/datamodel/Customer.java),
+[Article](src/datamodel/Article.java) and
+[Order](src/datamodel/Order.java)
+objects are examples of type `T`.
+`Customer` uses `Long` as `ID`-type, the other two classes use `String` as `ID`-type.
 
-- and the Test-Runner that executes JUnit tests
-  [junit-platform-console-standalone-1.9.2.jar](https://mvnrepository.com/artifact/org.junit.platform/junit-platform-console-standalone)
+<!-- - D2.a - [New Articles, Customers and Orders](#d2a-new-articles-customers-and-orders)
 
-Run JUnit-Tests in the IDE and in the terminal with:
+- D2.b - [*find()* method](#d2b-find-method)
 
-```sh
-mk compile-tests run-tests
-```
+- D2.c - [*printOrder()* method](#d2c-printorder-method)
 
-Output:
+- D2.d - [Order Value and Tax Calculations](#d2d-order-value-and-tax-calculations) -->
 
-```
-├─ JUnit Jupiter ✔
-│  └─ Application_0_always_pass_Tests ✔
-│     ├─ test_001_always_pass() ✔
-│     └─ test_002_always_pass() ✔
-├─ JUnit Vintage ✔
-└─ JUnit Platform Suite ✔
-
-Test run finished after 142 ms
-[         2 tests successful      ]   <-- 2 tests successful
-[         0 tests failed          ]   <-- 0 tests failed
-done.
-```
-
-Run JUnit-Tests also in your IDE.
 
 
 &nbsp;
-## 5. Generating Javadoc
 
-Build the javadoc for the project. Customize your name as author in
-[package-info.java](https://gitlab.bht-berlin.de/sgraupner/setup.se2/-/blob/main/src/main/application/package-info.java?ref_type=heads).
+## Release Preparation
 
-```sh
-mk javadoc
-```
+### a.) Packaging the Application
 
-Output:
-
-```
-Loading source files for package application...
-Constructing Javadoc information...
-Creating destination directory: "docs\"
-Building index for all the packages and classes...
-Standard Doclet version 21+35-LTS-2513
-Building tree for all the packages and classes...
-Generating docs\se1_play\application\Application.html...
-Generating docs\se1_play\application\package-summary.html...
-Generating docs\se1_play\application\package-tree.html...
-Generating docs\se1_play\module-summary.html...
-Generating docs\overview-tree.html...
-Building index for all classes...
-Generating docs\allclasses-index.html...
-Generating docs\allpackages-index.html...
-Generating docs\index-all.html...
-Generating docs\search.html...
-Generating docs\index.html...
-Generating docs\help-doc.html...
-done.
-```
-
-Open `docs/index.html` in a browser.
-
-
-&nbsp;
-## 6. Packaging the Application
-
-*Packaging* is part of the *Build-Process* in which a `.jar` file (jar: Java archive)
-is created that contains all compiled classes and a
-[MANIFEST.MF](https://gitlab.bht-berlin.de/sgraupner/setup.se2/-/blob/main/src/resources/META-INF/MANIFEST.MF?ref_type=heads) - file
-that describes the class to execute (Main-Class: application.Application).
+The packaged application will be `bin/application-1.0.0-SNAPSHOT.jar`.
 
 ```sh
-mk jar
-```
-or:
-```sh
-mk package
-```
-
-packages class files and creates the resulting `application-1.0.0-SNAPSHOT.jar`
-in the `bin` directory.
-
-```sh
-ls -la bin
+mk package                  # run packaging
+ls -la bin                  # show result in bin directory
 ```
 
 Output:
 
 ```
 total 16
-drwxr-xr-x 1 svgr2 Kein    0 Apr 14 21:55 .
-drwxr-xr-x 1 svgr2 Kein    0 Apr 14 21:54 ..
--rw-r--r-- 1 svgr2 Kein 5397 Apr 14 21:55 application-1.0.0-SNAPSHOT.jar
-drwxr-xr-x 1 svgr2 Kein    0 Apr 14 21:50 classes
-drwxr-xr-x 1 svgr2 Kein    0 Apr 14 21:26 resources
-drwxr-xr-x 1 svgr2 Kein    0 Apr 14 21:50 test-classes
+drwxr-xr-x 1      0 May  5 23:18 ./
+drwxr-xr-x 1      0 May  5 23:17 ../
+-rw-r--r-- 1 173615 May  5 23:18 application-1.0.0-SNAPSHOT.jar
+drwxr-xr-x 1      0 May  5 23:17 classes/
+drwxr-xr-x 1      0 May  5 23:17 resources/
+drwxr-xr-x 1      0 May  5 23:17 test-classes/
 ```
 
 
-&nbsp;
-## 7. Running the Packaged Application
+### b.) Running the packaged Application
 
-Test the jar-file with:
+Run the packaged jar-file with:
 
 ```sh
-mk run-jar n=100 n=1000
-```
-or execute directly by java:
-```sh
-java -jar bin/application-1.0.0-SNAPSHOT.jar n=100 n=1000
+find src/system
+
+mk run-jar
+java -jar bin/application-1.0.0-SNAPSHOT.jar
 ```
 
-Output:
+Final output of correct order table:
 
 ```
-java -jar bin/application-1.0.0-SNAPSHOT.jar n=100 n=1000
-Hello, Application
-arg: n=100
-arg: n=1000
+java application.Application
+Hello, Application_F1
+(6) Customer objects built.
+(9) Article objects built.
+(7) Order objects built.
+---
+Kunden:
++----------+----------------------------+--------------------------------------+
+| Kund.-ID | Name                       | Kontakt                              |
++----------+----------------------------+--------------------------------------+
+|   892474 | Meyer, Eric                | eric98@yahoo.com, (+1 contacts)      |
+|   643270 | Bayer, Anne                | anne24@yahoo.de, (+2 contacts)       |
+|   286516 | Schulz-Mueller, Tim        | tim2346@gmx.de                       |
+|   412396 | Blumenfeld, Nadine-Ulla    | +49 152-92454                        |
+|   456454 | Abdelalim, Khaled Saad Moha| +49 1524-12948210                    |
+|   651286 | Neumann, Lena              | lena228@gmail.com                    |
++----------+----------------------------+--------------------------------------+
+
+Artikel:
++----------+----------------------------+---------------+----------------------+
+|Artikel-ID| Beschreibung               |      Preis CUR|  Mehrwertsteuersatz  |
++----------+----------------------------+---------------+----------------------+
+|SKU-458362| Tasse                      |       2.99 EUR|  19.0% GER_VAT       |
+|SKU-693856| Becher                     |       1.49 EUR|  19.0% GER_VAT       |
+|SKU-518957| Kanne                      |      19.99 EUR|  19.0% GER_VAT       |
+|SKU-638035| Teller                     |       6.49 EUR|  19.0% GER_VAT       |
+|SKU-278530| Buch "Java"                |      49.90 EUR|   7.0% GER_VAT_REDU  |
+|SKU-425378| Buch "OOP"                 |      79.95 EUR|   7.0% GER_VAT_REDU  |
+|SKU-300926| Pfanne                     |      49.99 EUR|  19.0% GER_VAT       |
+|SKU-663942| Fahrradhelm                |     169.00 EUR|  19.0% GER_VAT       |
+|SKU-583978| Fahrradkarte               |       6.95 EUR|   7.0% GER_VAT_REDU  |
++----------+----------------------------+---------------+----------------------+
+
+Bestellungen:
++----------+--------------------------------------------+----------------------+
+|Bestell-ID| Bestellungen             MwSt*        Preis|     MwSt       Gesamt|
++----------+--------------------------------------------+----------------------+
+|8592356245| Eric's Bestellung:                         |                      |
+|          |  - 4 Teller, 4x 6.49     4.14     25.96 EUR|                      |
+|          |  - 8 Becher, 8x 1.49     1.90     11.92 EUR|                      |
+|          |  - 1 Buch "OOP"          5.23*    79.95 EUR|                      |
+|          |  - 4 Tasse, 4x 2.99      1.91     11.96 EUR|    13.18   129.79 EUR|
++----------+--------------------------------------------+----------------------+
+|3563561357| Anne's Bestellung:                         |                      |
+|          |  - 2 Teller, 2x 6.49     2.07     12.98 EUR|                      |
+|          |  - 2 Tasse, 2x 2.99      0.95      5.98 EUR|     3.02    18.96 EUR|
++----------+--------------------------------------------+----------------------+
+|5234968294| Eric's Bestellung:                         |                      |
+|          |  - 1 Kanne               3.19     19.99 EUR|     3.19    19.99 EUR|
++----------+--------------------------------------------+----------------------+
+|6135735635| Nadine-Ulla's Bestel                       |                      |
+|          |  - 12 Teller, 12x 6.    12.43     77.88 EUR|                      |
+|          |  - 1 Buch "Java"         3.26*    49.90 EUR|                      |
+|          |  - 1 Buch "OOP"          5.23*    79.95 EUR|    20.92   207.73 EUR|
++----------+--------------------------------------------+----------------------+
+|6173043537| Lena's Bestellung:                         |                      |
+|          |  - 1 Buch "Java"         3.26*    49.90 EUR|                      |
+|          |  - 1 Fahrradkarte        0.45*     6.95 EUR|     3.71    56.85 EUR|
++----------+--------------------------------------------+----------------------+
+|7372561535| Eric's Bestellung:                         |                      |
+|          |  - 1 Fahrradhelm        26.98    169.00 EUR|                      |
+|          |  - 1 Fahrradkarte        0.45*     6.95 EUR|    27.43   175.95 EUR|
++----------+--------------------------------------------+----------------------+
+|4450305661| Eric's Bestellung:                         |                      |
+|          |  - 3 Tasse, 3x 2.99      1.43      8.97 EUR|                      |
+|          |  - 3 Becher, 3x 1.49     0.71      4.47 EUR|                      |
+|          |  - 1 Kanne               3.19     19.99 EUR|     5.33    33.43 EUR|
++----------+--------------------------------------------+----------------------+
+                                                 Gesamt:|    76.78   642.70 EUR|
+                                                        +======================+
 done.
 ```
 
-The packaged .jar file can now be distributed.
+The packaged `.jar`-file: `application-1.0.0-SNAPSHOT.jar` can now be distributed.
 
-
-&nbsp;
-## 8. Project Structure
-
-The structure of project
-[se1.bestellsystem](https://github.com/sgra64/se1.bestellsystem)
-is:
-
-```sh
---<se1.bestellsystem>:                  # project directory
- |
- +-- README.md                          # project markup file (this file)
- |
- | # directory with files to source the project
- +--<.env>
- |   +-- setenv.sh, readme.txt, init.classpath, init.project
- |
- | # VSCode IDE project configuration
- +--<.vscode>
- |   +-- settings.json                  # project-specific VSCode settings
- |   +-- launch.json                    # Java/Debug launch configurtions
- |   +-- launch_terminal.sh             # terminal launch configurtions
- |
- +--<.git>                              # local git repository
- |   +-- config                         # local git configuration file
- |   +-- HEAD                           # HEAD pointer
- |   +--<objects>                       # local git object store
- +-- .gitignore                         # file with patterns to ignore by git
- |
- +-- lib --> branches/libs/libs         # symbolic link to libs-directory in libs-branch
- |
- +--<branches>          # directory to hold branches
- |   +-<libs>           # 'libs' branch checked from se1.play project
- |       +-<libs>       # directory within 'libs'-branch
- |          +--<junit>                         # JUnit .jar files
- |          |   +-- apiguardian-api-1.1.2.jar, junit-platform-commons-1.9.3.jar,
- |          |   +-- junit-jupiter-api-5.9.3.jar, opentest4j-1.2.0.jar
- |          +--<jacoco>                        # Code coverage .jar files
- |          |   +-- jacocoagent.jar  jacococli.jar
- |          +--<jackson>                       # JSON library for Java
- |          |   +-- jackson-annotations-2.13.0.jar, jackson-databind-2.13.0.jar,
- |          |       jackson-core-2.13.0.jar
- |          +-- junit-platform-console-standalone-1.9.2.jar    # JUnit runtime
- |
- | # source code:
- +--<src>                       # Java source code
- |   +-- module-info.java           # module defintion file
- |   +--<application>               # Java package 'application'
- |       +-- package-info.java      # package defintion (javadoc)
- |       +-- Application.java       # Runnable application program to start
- |       +-- Runtime.java           # main() entry point that creates Runnable instances
- |
- +--<resources>                 # none-Java source code, mainly configuration
- |   +-- application.properties     # properties file for the application
- |   +-- logging.properties         # logging properties
- |   +--<META-INF>                  # jar-packaging information
- |       +-- MANIFEST.MF            # jar-manifest file with Main-Class:
- |
- +--<tests>                     # Unit-test source code separated from src/main
- |   +--<application>               # mirrored package structure
- |       +-- Application_0_always_pass_Tests.java   # initial JUnit-test
- |
- | # compiled classes, generated artefacts:
- +--<bin>
- |   +-- application-1.0.0-SNAPSHOT.jar # executable .jar file (main artefact)
- |   +--<classes>                       # compiled Java classes (.class files)
- |   |   +-- module-info.class          # compiled module-info class
- |   |   +--<application>               # compiled 'application' package
- |   |       +-- package-info.class
- |   |       +-- Application.class
- |   |       +-- Runtime.class, RuntimeSupplierWithExceptions.class
- |   |
- |   +--<resources>                     # copied resource files
- |   |   +-- application.properties, logging.properties
- |   |
- |   +--<test-classes>                  # compiled test classes
- |       +--<application>
- |           +-- Application_0_always_pass_Tests.class
- |
-```
