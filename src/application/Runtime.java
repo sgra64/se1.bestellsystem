@@ -36,11 +36,11 @@ public class Runtime {
                 (String)properties.get("java.application.main"),
                 //
                 // attempt to instantiate the first existing class
+                "application.Application_F2", "application.Application_F1",
+                "application.Application_E2", "application.Application_E1",
+                "application.Application_D2", "application.Application_D1_sol", "application.Application_D1",
                 "application.Application_C4", "application.Application_C3",
                 "application.Application_C2", "application.Application_C1",
-                "application.Application_D2", "application.Application_D1",
-                "application.Application_E2", "application.Application_E1",
-                "application.Application_F2", "application.Application_F1",
             },
             cls -> Runnable.class.isAssignableFrom(cls),    // probe class implements Runnable interface
             properties, args,                               // constructor parameters for instantiation
