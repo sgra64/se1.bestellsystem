@@ -53,6 +53,9 @@ Setup assumes the project is under `git` control. Initialize `git`
 if this is not yet the case (skip step: `git init` otherwise).
 
 ```sh
+# if not present, pull main-branch from repository
+git clone -b main --single-branch git@github.com:sgra64/se1.bestellsystem.git
+
 cd se1.bestellsystem            # change into project directory
 
 [ -d .git ] || git init         # initialize git, if project is not yet under git control
@@ -63,12 +66,15 @@ git remote add se1-origin https://github.com/sgra64/se1.bestellsystem.git
 # fetch branches from the remote repository (if not yet fetched)
 git fetch se1-origin C12-Customer:C12-Customer
 git fetch se1-origin D12-Datamodel:D12-Datamodel
-git fetch se1-origin F12-Datamodel:F12-Datamodel
+git fetch se1-origin F12-Refactoring:F12-Refactoring
 
 # merge content of fetched branch into current branch
 git merge --allow-unrelated-histories --strategy-option theirs C12-Customer
 git merge --allow-unrelated-histories --strategy-option theirs D12-Datamodel
-git merge --allow-unrelated-histories --strategy-option theirs F12-Datamodel
+git merge --allow-unrelated-histories --strategy-option theirs F12-Refactoring
+
+# make sure to have or add complete datamodel classes from assignment
+# D12-Datamodel (branch D12-Datamodel does not have them)
 ```
 
 Files that came with the merge of the branch:
