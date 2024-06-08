@@ -15,10 +15,56 @@ import java.util.function.*;
 public class Runtime {
 
     /**
+     * Singleton Runtime instance.
+     */
+    private static Runtime runtime = null;
+
+    /**
+     * Properties instance.
+     */
+    private final Properties properties = new Properties();
+
+
+    /**
      * Default constructor (required by Javadoc)
      */
-    Runtime() { }
+    private Runtime() { }
 
+    /**
+     * Return singleton Runtime instance.
+     * @return Runtime instance
+     */
+    public static Runtime getRuntime() {
+        if(runtime==null) {
+            runtime = new Runtime();
+        }
+        return runtime;
+    }
+
+    private void run(String[] args) {
+        loadPropertiesFromFile("application.properties");
+
+        // instantiate main class or supply default instance
+        Runnable instance = create(new String[] {
+              //
+              // instantiate class from application.properties with priority
+              (String)properties.get("java.application.main"),
+              //
+              // attempt to instantiate the first existing class
+              "application.Application_G2", "application.Application_G1",
+              "application.Application_F2", "application.Application_F1",
+              "application.Application_E2", "application.Application_E1",
+              "application.Application_D2", "application.Application_D1_sol",
+              "application.Application_D1_complete", "application.Application_D1",
+              "application.Application_C4", "application.Application_C3",
+              "application.Application_C2", "application.Application_C1",
+          },
+          cls -> Runnable.class.isAssignableFrom(cls),    // probe class implements Runnable interface
+          properties, args,                               // constructor parameters for instantiation
+          () -> new Application(properties, args));       // supply default instance, if other attempts fail
+
+          instance.run();
+    }
 
     /**
      * JavaVM entry method that creates and runs an application instance
@@ -26,27 +72,16 @@ public class Runtime {
      * @param args arguments passed from command line 
      */
     public static void main(String[] args) {
-        Runtime rt = new Runtime();
-        var properties = rt.loadPropertiesFromFile("application.properties");
+        getRuntime()
+            .run(args);
+    }
 
-        // instantiate main class or supply default instance
-        Runnable instance = rt.create(new String[] {
-                //
-                // instantiate class from application.properties with priority
-                (String)properties.get("java.application.main"),
-                //
-                // attempt to instantiate the first existing class
-                "application.Application_F2", "application.Application_F1",
-                "application.Application_E2", "application.Application_E1",
-                "application.Application_D2", "application.Application_D1_sol", "application.Application_D1",
-                "application.Application_C4", "application.Application_C3",
-                "application.Application_C2", "application.Application_C1",
-            },
-            cls -> Runnable.class.isAssignableFrom(cls),    // probe class implements Runnable interface
-            properties, args,                               // constructor parameters for instantiation
-            () -> new Application(properties, args));       // supply default instance, if other attempts fail
-
-        instance.run(); // invoke {@code run()} method (of {@link Runnable} interface) on created instance
+    /**
+     * Return properties from "application.properties" file.
+     * @return properties structure
+     */
+    public Properties properties() {
+        return properties;
     }
 
     /**
@@ -137,7 +172,6 @@ public class Runtime {
      * @return Properties with values loaded from file (or empty)
      */
     Properties loadPropertiesFromFile(String fileName) {
-        Properties properties = new Properties();
         try (InputStream is = List.of(fileName, "resources/" + fileName).stream()
             // reading properties from within a jar file requires "resources"-prefix
             .map(fis -> Optional.ofNullable(ClassLoader.getSystemClassLoader().getResourceAsStream(fis)))
