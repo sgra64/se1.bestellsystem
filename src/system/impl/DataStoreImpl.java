@@ -54,7 +54,7 @@ class DataStoreImpl implements DataStore, DataBuilder {
             @Override public Customer create(Long id, String name) {
                 Customer customer = new Customer(name)
                         .setId(id);
-                customersRepository.save(customer);	// requires id is set
+                customersRepository.save(customer); // requires id is set
                 return customer;
             }
 
@@ -66,7 +66,7 @@ class DataStoreImpl implements DataStore, DataBuilder {
             @Override public Article create(String id, String name) {
                 Article article = new Article()
                         .setId(id);
-                articlesRepository.save(article);	// requires id is set
+                articlesRepository.save(article);   // requires id is set
                 return article.setDescription(name);
             }
 
@@ -83,7 +83,7 @@ class DataStoreImpl implements DataStore, DataBuilder {
                 if(customer.isPresent()) {
                     Order order = new Order(customer.get())
                             .setId(id);
-                    ordersRepository.save(order);	// requires id is set
+                    ordersRepository.save(order);   // requires id is set
                     return Optional.of(order);
                 }
                 return Optional.empty();

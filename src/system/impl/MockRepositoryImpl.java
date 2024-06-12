@@ -99,7 +99,7 @@ class MockRepositoryImpl<T, ID> implements Repository<T, ID> {
         if(ids==null)
             throw new IllegalArgumentException("argument ids is null.");
         //
-        return List.of();	// empty result
+        return List.of();   // empty result
     }
 
     /**
@@ -137,7 +137,7 @@ class MockRepositoryImpl<T, ID> implements Repository<T, ID> {
         if(entities==null)
             throw new IllegalArgumentException("argument entities is null.");
         //
-        return entities;	// method has no effect
+        return entities;    // method has no effect
     }
 
     /**

@@ -57,7 +57,7 @@ class PrinterImpl implements Printer {
         //
         final TableFormatter tf = new TableFormatter(
                 // column specification
-        		// "| %8s ", "| %-32s", "| %-36s |"
+                // "| %8s ", "| %-32s", "| %-36s |"
                 "| %8s ", "| %-27s", "| %-36s |"
             )
             .line()

@@ -120,22 +120,22 @@ public class Application_F1 implements Runnable {
         //
         .buildOrders( (customers, articles, factory) -> {
             // need to look up customers and article for building orders
-            var eric 	= customers.findById(892474L);
-            var anne 	= customers.findById(643270L);
+            var eric = customers.findById(892474L);
+            var anne = customers.findById(643270L);
             var nadine = customers.findById(412396L);
             var lena = customers.findById(651286L);
             //
-            Article teller 	= articles.findById("SKU-638035").get();
-            Article becher 	= articles.findById("SKU-693856").get();
-            Article tasse 	= articles.findById("SKU-458362").get();
-            Article kanne 	= articles.findById("SKU-518957").get();
+            Article teller  = articles.findById("SKU-638035").get();
+            Article becher  = articles.findById("SKU-693856").get();
+            Article tasse   = articles.findById("SKU-458362").get();
+            Article kanne   = articles.findById("SKU-518957").get();
             Article buch_OOP = articles.findById("SKU-425378").get();
             Article buch_Java = articles.findById("SKU-278530").get();
-            Article helm 	= articles.findById("SKU-663942").get();
-            Article karte 	= articles.findById("SKU-583978").get();
+            Article helm    = articles.findById("SKU-663942").get();
+            Article karte   = articles.findById("SKU-583978").get();
 
             // Eric's 1st order
-            factory.create("8592356245", eric)	  // new order for Eric
+            factory.create("8592356245", eric)  // new order for Eric
                 .map(order -> order
                     .addItem(teller, 4)     // + item: 4 Teller, 4x 6.49 €
                     .addItem(becher, 8)     // + item: 8 Becher, 8x 1.49 €
