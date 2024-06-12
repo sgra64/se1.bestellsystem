@@ -147,7 +147,7 @@ public class Application_D1 implements Runnable {
         articles.addAll(List.of(tasse, becher, kanne, teller, buch_Java, buch_OOP));
 
         // Eric's 1st order
-        var o8592 = new Order(eric)	  // new order for Eric
+        var o8592 = new Order(eric) // new order for Eric
                 .setId("8592356245")    // assign order-id: 8592356245
                 .addItem(teller, 4)     // + item: 4 Teller, 4x 6.49 €
                 .addItem(becher, 8)     // + item: 8 Becher, 8x 1.49 €
@@ -497,11 +497,11 @@ public class Application_D1 implements Runnable {
      * Map Currency-enum to Unicode-Strings.
      */
     private final Map<Currency, String> CurrencySymbol = Map.of(
-        Currency.EUR, "\u20ac",		// Unicode: EURO
-        Currency.USD, "$",			// ASCII: US Dollar
-        Currency.GBP, "\u00A3",		// Unicode: UK Pound Sterling
-        Currency.YEN, "\u00A5",		// Unicode: Japanese Yen
-        Currency.BTC, "BTC"			// no Unicode for Bitcoin
+        Currency.EUR, "\u20ac",     // Unicode: EURO
+        Currency.USD, "$",          // ASCII: US Dollar
+        Currency.GBP, "\u00A3",     // Unicode: UK Pound Sterling
+        Currency.YEN, "\u00A5",     // Unicode: Japanese Yen
+        Currency.BTC, "BTC"         // no Unicode for Bitcoin
     );
 
     /**
@@ -522,7 +522,7 @@ public class Application_D1 implements Runnable {
      * @return formatted price according to style.
      */
     public String fmtPrice(final long price, final int... fmt) {
-        final int ft = fmt.length > 0? fmt[0] : 0;	// 0 is default format
+        final int ft = fmt.length > 0? fmt[0] : 0;  // 0 is default format
         switch(ft) {
         case 0: return fmtDecimal(price, 2);
         case 1: return fmtDecimal(price, 2, " EUR");
@@ -548,15 +548,15 @@ public class Application_D1 implements Runnable {
     public String fmtDecimal(final long value, final int decimalDigits, final String... unit) {
         final String unitStr = unit.length > 0? unit[0] : null;
         final Object[][] dec = {
-            {      "%,d", 1L },		// no decimal digits:  16,000Y
+            {      "%,d", 1L },     // no decimal digits:  16,000Y
             { "%,d.%01d", 10L },
-            { "%,d.%02d", 100L },	// double-digit price: 169.99E
-            { "%,d.%03d", 1000L },	// triple-digit unit:  16.999-
+            { "%,d.%02d", 100L },   // double-digit price: 169.99E
+            { "%,d.%03d", 1000L },  // triple-digit unit:  16.999-
         };
         String result;
         String fmt = (String)dec[decimalDigits][0];
         if(unitStr != null && unitStr.length() > 0) {
-            fmt += "%s";	// add "%s" to format for unit string
+            fmt += "%s";    // add "%s" to format for unit string
         }
         int decdigs = Math.max(0, Math.min(dec.length - 1, decimalDigits));
         //

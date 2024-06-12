@@ -14,15 +14,15 @@ import java.util.function.*;
  */
 public class Runtime {
 
-	/**
-	 * Singleton Runtime instance.
-	 */
-	private static Runtime runtime = null;
+    /**
+     * Singleton Runtime instance.
+     */
+    private static Runtime runtime = null;
 
-	/**
-	 * Properties instance.
-	 */
-	private final Properties properties = new Properties();
+    /**
+     * Properties instance.
+     */
+    private final Properties properties = new Properties();
 
 
     /**
@@ -35,17 +35,17 @@ public class Runtime {
      * @return Runtime instance
      */
     public static Runtime getRuntime() {
-    	if(runtime==null) {
-    		runtime = new Runtime();
-    	}
-    	return runtime;
+        if(runtime==null) {
+            runtime = new Runtime();
+        }
+        return runtime;
     }
 
-	private void run(String[] args) {
-		loadPropertiesFromFile("application.properties");
+    private void run(String[] args) {
+        loadPropertiesFromFile("application.properties");
 
-	    // instantiate main class or supply default instance
-	    Runnable instance = create(new String[] {
+        // instantiate main class or supply default instance
+        Runnable instance = create(new String[] {
               //
               // instantiate class from application.properties with priority
               (String)properties.get("java.application.main"),
@@ -61,8 +61,8 @@ public class Runtime {
           properties, args,                               // constructor parameters for instantiation
           () -> new Application(properties, args));       // supply default instance, if other attempts fail
 
-	      instance.run();
-	}
+          instance.run();
+    }
 
     /**
      * JavaVM entry method that creates and runs an application instance
@@ -70,8 +70,8 @@ public class Runtime {
      * @param args arguments passed from command line 
      */
     public static void main(String[] args) {
-    	getRuntime()
-    		.run(args);
+        getRuntime()
+            .run(args);
     }
 
     /**
@@ -79,7 +79,7 @@ public class Runtime {
      * @return properties structure
      */
     public Properties properties() {
-    	return properties;
+        return properties;
     }
 
     /**
