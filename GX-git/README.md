@@ -39,7 +39,7 @@ Content:
 
 - [G3: Own Remote Repository](#g3-own-remote-repository) - (2 pt)
 
-- [G4: Integration of Remote Branches](#g4-integration-of-remote-branches) - (4 pt)
+- [G4: Branch Integration: *feat.730-json-data*](#g4-branch-integration-feat730-json-data) - (4 pt)
 <!-- 
 - [G5: Structured Branches](#g5-structured-branches) - (3 pt)
 
@@ -52,6 +52,7 @@ Content:
 
 &nbsp;
 
+---
 ## G1: Local *git* Repository
 
 Create a new directory and `cd` into it:
@@ -209,10 +210,10 @@ ccfeb68 add new files: tom.txt, jerry.txt
 ```
 
 
-
-
 &nbsp;
+
 ## G2: Local Commits, Local Branches
+
 Starting point of this assignment is the state of the project after
 refactoring, see branch
 [F12-Refactoring](https://github.com/sgra64/se1.bestellsystem/tree/F12-Refactoring).
@@ -327,10 +328,9 @@ d87b4f1 (HEAD -> main) update version "1.0.0-SNAPSHOT-GX" application/package-in
 ```
 
 
-
-
 &nbsp;
 
+---
 ## G3: Own Remote Repository
 
 Read about
@@ -398,7 +398,7 @@ se1-origin      https://github.com/sgra64/se1.bestellsystem.git (push)
 ```
 
 
-### G3.d) Establish the connection between local and remote branch
+### G3.d) Create the connection between local and remote branch
 
 Adding a remote link is not sufficient to push commits to a remote.
 
@@ -457,40 +457,37 @@ git push -u origin main
 ```
 
 
-
-
 &nbsp;
 
-## G4: Integration of Remote Branches
-<!-- feat.730-json-data -->
+---
+## G4: Branch Integration: *feat.730-json-data*
 
-Coming soon.
+Branch *feat.730-json-data* enables a new feature to load data-objects (*Customer*, *Article*
+and *Orders*) from *JSON files* replacing object creation in
+[Application_F1.java](https://github.com/sgra64/se1.bestellsystem/blob/F12-Refactoring/src/application/Application_F1.java)
+(before version).
 
+The updated file (after integration of branch *feat.730-json-data*) will no longer
+contain object creations:
+[Application_F1.java](https://github.com/sgra64/se1-dev/blob/feat.730-json-data/src/application/Application_F1.java)
+(after version).
 
-<!-- 
-&nbsp;
+Instead, data will be obtained from JSON files in the new
+[data](https://github.com/sgra64/se1-dev/tree/feat.730-json-data/data) directory.
 
-## G5: Structured Branches
-<!-- http://git-school.github.io/visualizing-git - ->
+JSON file [data/customers.json](https://github.com/sgra64/se1-dev/blob/feat.730-json-data/data/customers.json)
+contains *Customer* data:
 
+```json
+[
+  {"id": 892474, "name": "Eric Meyer", "contacts": ["eric98@yahoo.com", "(030) 3945-642298"] },
+  {"id": 643270, "name": "Bayer, Anne", "contacts": ["anne24@yahoo.de", "(030) 3481-23352", "fax: (030)23451356"] },
+  {"id": 286516, "name": "Tim Schulz-Mueller", "contacts": ["tim2346@gmx.de"] },
+  {"id": 412396, "name": "Nadine-Ulla Blumenfeld", "contacts": ["+49 152-92454"] },
+  {"id": 456454, "name": "Khaled Saad Mohamed Abdelalim", "contacts": ["+49 1524-12948210"] },
+  {"id": 651286, "name": "Lena Neumann", "contacts": ["lena228@gmail.com"] }
+]
+```
 
-
-
-&nbsp;
-
-## G6: Feature Branch *feat.728*: *LabelPrinter*
-
-
-
-
-&nbsp;
-
-## G7: Feature Branch *feat.730*: *Customer Addresses*
-
-
-
-
-&nbsp;
-
-## G8: Integration (Merge) of Feature Branches
- -->
+Complete the
+[steps for the assinment](https://github.com/sgra64/se1-dev/blob/feat.730-json-data/README.md).
