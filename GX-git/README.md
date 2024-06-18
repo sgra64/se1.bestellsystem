@@ -39,7 +39,7 @@ Content:
 
 - [G3: Own Remote Repository](#g3-own-remote-repository) - (2 pt)
 
-- [G4: Branch Integration: *feat.730-json-data*](#g4-branch-integration-feat730-json-data) - (4 pt)
+- [G4: Branch Integration: *feat.730-json-data*](#g4-branch-integration-feat730-json-data) - (8 pt)
 <!-- 
 - [G5: Structured Branches](#g5-structured-branches) - (3 pt)
 
