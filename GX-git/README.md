@@ -39,15 +39,17 @@ Content:
 
 - [G3: Own Remote Repository](#g3-own-remote-repository) - (2 pt)
 
-- [G4: Branch Integration: *feat.730-json-data*](#g4-branch-integration-feat730-json-data) - (8 pt)
-<!-- 
-- [G5: Structured Branches](#g5-structured-branches) - (3 pt)
+- [G4: Branch Integration: *feat.730-json-data*](#g4-branch-integration-feat730-json-data) - (10 pt)
 
+- [G5: Structured Branches](#g5-structured-branches) - (6 pt)
+
+<!-- 
 - [G6: Feature Branch *feat.728* *LabelPrinter*](#g6-feature-branch-feat728-labelprinter) - (4 pt)
 
 - [G7: Feature Branch *feat.730*: *Customer Addresses*](#g7-feature-branch-feat730-customer-addresses) - (6 pt)
 
-- [G8: Integration (Merge) of Feature Branches](#g8-integration-merge-of-feature-branches) - (6 pt) -->
+- [G8: Integration (Merge) of Feature Branches](#g8-integration-merge-of-feature-branches) - (6 pt)
+-->
 
 
 &nbsp;
