@@ -493,3 +493,26 @@ contains *Customer* data:
 
 Complete the
 [steps for the assinment](https://github.com/sgra64/se1-dev/blob/feat.730-json-data/README.md).
+
+
+
+&nbsp;
+
+---
+## G5: Structured Branches
+
+The assignment uses a visualization platform for building branch structures
+in git:
+[visualizing-git](http://git-school.github.io/visualizing-git).
+
+- Enter `help` in the lower left input field following `$`. Use available
+    commands to construct *commit sequences*, *branch points* (*bases*),
+    *branches* and *merges*.
+
+- Follow instructions in
+    [G4-Git-Branches.pdf](https://github.com/sgra64/se1.bestellsystem/blob/markup/GX-git/G4-Git-Branches.pdf)
+    and complete tasks.
+
+    Show browser or screen shots with create branch structures to collect
+    points for the assignment.
+
