@@ -516,3 +516,7 @@ in git:
     Show browser or screen shots with create branch structures to collect
     points for the assignment.
 
+Example:
+
+<img src="https://github.com/sgra64/se1.bestellsystem/blob/markup/GX-git/git-viz-branches.png?raw=true" alt="drawing" width="600"/>
+
